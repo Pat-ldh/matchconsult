@@ -13,7 +13,7 @@ def _skill_match(offer_skills: list[str], cv_text: str) -> tuple[list[str], list
 def _infer_title(cv_meta_title: str, cv_text: str) -> str:
     if cv_meta_title:
         return cv_meta_title
-    lines = [l.strip() for l in cv_text.split("\n") if l.strip()]
+    lines = [line.strip() for line in cv_text.split("\n") if line.strip()]
     return lines[1][:60] if len(lines) > 1 else (lines[0][:60] if lines else "Consultant")
 
 
