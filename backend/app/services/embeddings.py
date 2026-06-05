@@ -53,6 +53,7 @@ class EmbeddingService:
                 text = extract_text(str(cv_path))
                 if not text.strip():
                     continue
+                assert self.model is not None
                 embedding = self.model.encode(text[:_MAX_CHARS])
                 cv_meta = meta.get(cv_id, {})
                 self.cv_store[cv_id] = {
