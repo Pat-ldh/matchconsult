@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+.env
+
+# uv
+uv.lock
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.env.local
+
+# CVs — données personnelles
+backend/data/cvs/*
+!backend/data/cvs/.gitkeep
+
+# Modèles sentence-transformers (cache lourd)
+backend/.cache/
+sentence_transformers_models/
+.cache/
+
+# IDE / outils
+.claude/
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

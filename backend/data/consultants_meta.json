@@ -1,0 +1,13 @@
+{
+  "_comment": "Clé = nom du fichier CV sans extension. Toutes les clés sont optionnelles.",
+  "jean_dupont": {
+    "name": "Jean Dupont",
+    "title": "Architecte Cloud Senior",
+    "available": true
+  },
+  "marie_martin": {
+    "name": "Marie Martin",
+    "title": "Chef de Projet MOA",
+    "available": false
+  }
+}
