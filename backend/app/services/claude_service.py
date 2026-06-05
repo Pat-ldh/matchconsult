@@ -2,6 +2,8 @@ import asyncio
 import json
 import logging
 
+from anthropic.types import TextBlock
+
 from app.config import settings
 from app.models import RewrittenOffer
 from app.services.demo_service import demo_explanations, demo_rewrite_offer
@@ -66,7 +68,7 @@ async def _anthropic_rewrite(mission_text: str) -> RewrittenOffer:
         messages=[{"role": "user", "content": _REWRITE_TEMPLATE.format(mission_text=mission_text[:4000])}],
     )
     block = msg.content[0]
-    raw = _strip_markdown(block.text if hasattr(block, "text") else "")
+    raw = _strip_markdown(block.text if isinstance(block, TextBlock) else "")
     return RewrittenOffer(**json.loads(raw))
 
 
@@ -81,7 +83,7 @@ async def _anthropic_explain_one(offer_summary: str, cv_text: str) -> str:
             )}],
         )
         block = msg.content[0]
-        return (block.text if hasattr(block, "text") else "").strip()
+        return (block.text if isinstance(block, TextBlock) else "").strip()
     except Exception as e:
         logger.error("Anthropic explanation failed: %s", e)
         return "Profil correspondant aux exigences de la mission."
