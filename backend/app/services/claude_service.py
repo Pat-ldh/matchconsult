@@ -65,7 +65,8 @@ async def _anthropic_rewrite(mission_text: str) -> RewrittenOffer:
         system=_REWRITE_SYSTEM,
         messages=[{"role": "user", "content": _REWRITE_TEMPLATE.format(mission_text=mission_text[:4000])}],
     )
-    raw = _strip_markdown(msg.content[0].text)
+    block = msg.content[0]
+    raw = _strip_markdown(block.text if hasattr(block, "text") else "")
     return RewrittenOffer(**json.loads(raw))
 
 
@@ -79,7 +80,8 @@ async def _anthropic_explain_one(offer_summary: str, cv_text: str) -> str:
                 offer_summary=offer_summary, cv_excerpt=cv_text[:2000]
             )}],
         )
-        return msg.content[0].text.strip()
+        block = msg.content[0]
+        return (block.text if hasattr(block, "text") else "").strip()
     except Exception as e:
         logger.error("Anthropic explanation failed: %s", e)
         return "Profil correspondant aux exigences de la mission."
@@ -102,7 +104,7 @@ async def _groq_rewrite(mission_text: str) -> RewrittenOffer:
             {"role": "user", "content": _REWRITE_TEMPLATE.format(mission_text=mission_text[:4000])},
         ],
     )
-    raw = _strip_markdown(resp.choices[0].message.content)
+    raw = _strip_markdown(resp.choices[0].message.content or "")
     return RewrittenOffer(**json.loads(raw))
 
 
@@ -116,7 +118,7 @@ async def _groq_explain_one(offer_summary: str, cv_text: str) -> str:
                 offer_summary=offer_summary, cv_excerpt=cv_text[:2000]
             )}],
         )
-        return resp.choices[0].message.content.strip()
+        return (resp.choices[0].message.content or "").strip()
     except Exception as e:
         logger.error("Groq explanation failed: %s", e)
         return "Profil correspondant aux exigences de la mission."

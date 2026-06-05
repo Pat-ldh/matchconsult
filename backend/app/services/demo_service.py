@@ -19,8 +19,9 @@ def _extract_keywords(text: str) -> list[str]:
     ]
     found = []
     for p in patterns:
-        if re.search(p, text, re.IGNORECASE):
-            found.append(re.search(p, text, re.IGNORECASE).group(0))
+        m = re.search(p, text, re.IGNORECASE)
+        if m:
+            found.append(m.group(0))
     return found[:6] if found else ["Développement logiciel", "Architecture", "API"]
 
 
